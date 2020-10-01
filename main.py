@@ -174,7 +174,7 @@ if __name__ == '__main__':
     PROD_DIR = sys.argv[1]
     SIT_DIR = sys.argv[2]
 
-    move_files(PROD_DIR, SIT_DIR)
+    # move_files(PROD_DIR, SIT_DIR)
 
     PROD_DIR_FILES = os.listdir(PROD_DIR)
     SIT_DIR_FILES = os.listdir(SIT_DIR)
