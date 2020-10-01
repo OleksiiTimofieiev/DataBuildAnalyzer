@@ -138,6 +138,18 @@ def compare_files(input_prod, input_sit):
     PROD_DICT.clear()
     SIT_DICT.clear()
 
+def move_files(PROD_DIR, SIT_DIR):
+    subfolders_prod = [f.path for f in os.scandir(PROD_DIR) if f.is_dir()]
+
+    print(subfolders_prod)
+    for subfolder in subfolders_prod:
+        print(os.listdir(subfolder))
+
+    subfolders_sit = [f.path for f in os.scandir(SIT_DIR) if f.is_dir()]
+    print(subfolders_sit)
+    for subfolder in subfolders_sit:
+        print(os.listdir(subfolder))
+
 #TODO: compare files PROD_DATABUILD_DIR && SIT_DATABUILD_DIR
 #TODO: filter for DDS_CATEGORY == FUTURES
 #TODO: move all files from the subdirectories to the main direcotry of databuild
@@ -147,14 +159,16 @@ if __name__ == '__main__':
     PROD_DIR = sys.argv[1]
     SIT_DIR = sys.argv[2]
 
+    move_files(PROD_DIR, SIT_DIR)
+
     PROD_DIR_FILES = os.listdir(PROD_DIR)
-    PROD_SIT_FILES = os.listdir(SIT_DIR)
+    SIT_DIR_FILES = os.listdir(SIT_DIR)
 
     COMMON_FILES = []
     UNCOMMON_FILES = []
 
     #TODO: check with Sergio
-    for file in PROD_SIT_FILES:
+    for file in SIT_DIR_FILES:
         if file in PROD_DIR_FILES:
             COMMON_FILES.append(file)
         else:
@@ -166,3 +180,4 @@ if __name__ == '__main__':
 
     print(f"\n{bcolors.OKGREEN}Analyzed files:\n{COMMON_FILES}{bcolors.ENDC}")
     print(f"\n{bcolors.WARNING}UNCOMMON_FILES. NOT ANALIZED:\n{UNCOMMON_FILES}{bcolors.ENDC}")
+
