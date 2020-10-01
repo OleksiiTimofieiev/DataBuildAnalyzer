@@ -1,5 +1,7 @@
 import sys
 import os
+from openpyxl import Workbook
+
 
 PROD_DICT = {}
 SIT_DICT = {}
@@ -74,7 +76,7 @@ def read_file(input, dict):
             INPUT_OBJECT_LIST = []
     # print(dict)
 
-def compare_files(input_prod, input_sit):
+def compare_files(input_prod, input_sit, sheet, filename):
 
     # './PROD/BUSE_DXV_MBP_OMM.EXL.PROD.txt'
     # SIT_FILE = open('./SIT/BUSE_DXV_MBP_OMM.EXL.SIT', 'r')
@@ -132,6 +134,28 @@ def compare_files(input_prod, input_sit):
         print("ABSENT_PROD_KEYS_ON_SIT -> " + str(ABSENT_PROD_KEYS_ON_SIT))
         print("ABSENT_SIT_KEYS_ON_PROD -> " + str(ABSENT_SIT_KEYS_ON_PROD))
         print("COMP_FILE_DIFF_UNIQUE -> " + str(COMP_FILE_DIFF_UNIQUE))
+
+        i = 2
+        for elem in ABSENT_PROD_KEYS_ON_SIT:
+            sheet.cell(row=i, column=1).value = elem
+            sheet.cell(row=i, column=4).value = filename
+            i = i + 1
+
+        i=2
+        for elem in ABSENT_SIT_KEYS_ON_PROD:
+            sheet.cell(row=i, column=2).value = elem
+            sheet.cell(row=i, column=4).value = filename
+
+            i = i + 1
+
+        i=2
+        for elem in COMP_FILE_DIFF_UNIQUE:
+            sheet.cell(row=i, column=3).value = elem
+            sheet.cell(row=i, column=4).value = filename
+            i = i + 1
+
+
+
     #TODO: delete below upon finish
     else:
         print("equal")
@@ -153,9 +177,12 @@ def move_files(PROD_DIR, SIT_DIR):
 #TODO: compare files PROD_DATABUILD_DIR && SIT_DATABUILD_DIR
 #TODO: filter for DDS_CATEGORY == FUTURES
 #TODO: move all files from the subdirectories to the main direcotry of databuild
-
-if __name__ == '__main__':
 #TODO: check quantity of elements and syntax of the inputs in cmd line
+if __name__ == '__main__':
+
+    workbook = Workbook()
+    sheet = workbook.active
+
     PROD_DIR = sys.argv[1]
     SIT_DIR = sys.argv[2]
 
@@ -174,10 +201,25 @@ if __name__ == '__main__':
         else:
             UNCOMMON_FILES.append(file)
 
+    sheet.cell(row=1, column=1).value = 'ABSENT_PROD_KEYS_ON_SIT'
+    sheet.cell(row=1, column=2).value = 'ABSENT_SIT_KEYS_ON_PROD'
+    sheet.cell(row=1, column=3).value = 'COMP_FILE_DIFF_UNIQUE'
+    sheet.cell(row=1, column=4).value = 'Filename'
+
     for file in COMMON_FILES:
         print(f"{bcolors.HEADER}file analyzed -> {file}{bcolors.ENDC}")
-        compare_files(PROD_DIR + file, SIT_DIR + file)
+        compare_files(PROD_DIR + file, SIT_DIR + file, sheet, file)
 
     print(f"\n{bcolors.OKGREEN}Analyzed files:\n{COMMON_FILES}{bcolors.ENDC}")
     print(f"\n{bcolors.WARNING}UNCOMMON_FILES. NOT ANALIZED:\n{UNCOMMON_FILES}{bcolors.ENDC}")
+
+    # print("ABSENT_PROD_KEYS_ON_SIT -> " + str(ABSENT_PROD_KEYS_ON_SIT))
+    # print("ABSENT_SIT_KEYS_ON_PROD -> " + str(ABSENT_SIT_KEYS_ON_PROD))
+    # print("COMP_FILE_DIFF_UNIQUE -> " + str(COMP_FILE_DIFF_UNIQUE))
+
+
+
+
+    workbook.save(filename="DIFF_RESULT.xlsx")
+
 
