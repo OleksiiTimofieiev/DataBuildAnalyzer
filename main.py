@@ -4,6 +4,9 @@ import os
 PROD_DICT = {}
 SIT_DICT = {}
 
+#TODO: create gitignore
+#TODO: output to excel file
+
 def read_file(input, dict):
 
     INPUT_FILE = open(input, 'r')
@@ -126,18 +129,14 @@ def compare_files(input_prod, input_sit):
     SIT_DICT.clear()
 
 #TODO: compare files PROD_DATABUILD_DIR && SIT_DATABUILD_DIR
-
 #TODO: all files are available and the same
-# 2. list_of_files = []
-# PROD || SIT
-
 #TODO: filter for DDS_CATEGORY == FUTURES
 #TODO: move all files from the subdirectories to the main direcotry of databuild
-
 #TODO: show filename and other necessary information
+#TODO: colorized output
 
 if __name__ == '__main__':
-    #TODO: check quantity of elements and syntax of the inputs in cmd line
+#TODO: check quantity of elements and syntax of the inputs in cmd line
     PROD_DIR = sys.argv[1]
     SIT_DIR = sys.argv[2]
 
