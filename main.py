@@ -137,27 +137,21 @@ def compare_files(input_prod, input_sit, sheet, filename):
 
         i = 2
         for elem in ABSENT_PROD_KEYS_ON_SIT:
-
             sheet.cell(row=i, column=1).value = elem + '/' + filename
-            # sheet.cell(row=i, column=4).value = filename
             i = i + 1
 
         i=2
         for elem in ABSENT_SIT_KEYS_ON_PROD:
             sheet.cell(row=i, column=2).value = elem + '/' +  filename
-
             i = i + 1
 
         i=2
         for elem in COMP_FILE_DIFF_UNIQUE:
             sheet.cell(row=i, column=3).value = elem + '/' +  filename
             i = i + 1
-
-
-
-    #TODO: delete below upon finish
     else:
         print("equal")
+
     PROD_DICT.clear()
     SIT_DICT.clear()
 
@@ -173,12 +167,7 @@ def move_files(PROD_DIR, SIT_DIR):
     for subfolder in subfolders_sit:
         print(os.listdir(subfolder))
 
-#TODO: compare files PROD_DATABUILD_DIR && SIT_DATABUILD_DIR
-#TODO: filter for DDS_CATEGORY == FUTURES
-#TODO: move all files from the subdirectories to the main direcotry of databuild
-#TODO: check quantity of elements and syntax of the inputs in cmd line
 if __name__ == '__main__':
-
     workbook = Workbook()
     sheet = workbook.active
 
@@ -193,7 +182,6 @@ if __name__ == '__main__':
     COMMON_FILES = []
     UNCOMMON_FILES = []
 
-    #TODO: check with Sergio
     for file in SIT_DIR_FILES:
         if file in PROD_DIR_FILES:
             COMMON_FILES.append(file)
@@ -203,7 +191,6 @@ if __name__ == '__main__':
     sheet.cell(row=1, column=1).value = 'ABSENT_PROD_KEYS_ON_SIT'
     sheet.cell(row=1, column=2).value = 'ABSENT_SIT_KEYS_ON_PROD'
     sheet.cell(row=1, column=3).value = 'COMP_FILE_DIFF_UNIQUE'
-    sheet.cell(row=1, column=4).value = 'Filename'
 
     for file in COMMON_FILES:
         print(f"{bcolors.HEADER}file analyzed -> {file}{bcolors.ENDC}")
@@ -215,7 +202,6 @@ if __name__ == '__main__':
     # print("ABSENT_PROD_KEYS_ON_SIT -> " + str(ABSENT_PROD_KEYS_ON_SIT))
     # print("ABSENT_SIT_KEYS_ON_PROD -> " + str(ABSENT_SIT_KEYS_ON_PROD))
     # print("COMP_FILE_DIFF_UNIQUE -> " + str(COMP_FILE_DIFF_UNIQUE))
-
 
     workbook.save(filename="DIFF_RESULT.xlsx")
 
