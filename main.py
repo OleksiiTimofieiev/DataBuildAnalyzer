@@ -137,21 +137,20 @@ def compare_files(input_prod, input_sit, sheet, filename):
 
         i = 2
         for elem in ABSENT_PROD_KEYS_ON_SIT:
-            sheet.cell(row=i, column=1).value = elem
-            sheet.cell(row=i, column=4).value = filename
+
+            sheet.cell(row=i, column=1).value = elem + '/' + filename
+            # sheet.cell(row=i, column=4).value = filename
             i = i + 1
 
         i=2
         for elem in ABSENT_SIT_KEYS_ON_PROD:
-            sheet.cell(row=i, column=2).value = elem
-            sheet.cell(row=i, column=4).value = filename
+            sheet.cell(row=i, column=2).value = elem + '/' +  filename
 
             i = i + 1
 
         i=2
         for elem in COMP_FILE_DIFF_UNIQUE:
-            sheet.cell(row=i, column=3).value = elem
-            sheet.cell(row=i, column=4).value = filename
+            sheet.cell(row=i, column=3).value = elem + '/' +  filename
             i = i + 1
 
 
@@ -216,8 +215,6 @@ if __name__ == '__main__':
     # print("ABSENT_PROD_KEYS_ON_SIT -> " + str(ABSENT_PROD_KEYS_ON_SIT))
     # print("ABSENT_SIT_KEYS_ON_PROD -> " + str(ABSENT_SIT_KEYS_ON_PROD))
     # print("COMP_FILE_DIFF_UNIQUE -> " + str(COMP_FILE_DIFF_UNIQUE))
-
-
 
 
     workbook.save(filename="DIFF_RESULT.xlsx")
