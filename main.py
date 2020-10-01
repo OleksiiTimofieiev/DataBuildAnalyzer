@@ -7,6 +7,16 @@ SIT_DICT = {}
 #TODO: create gitignore
 #TODO: output to excel file
 
+class bcolors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
+
 def read_file(input, dict):
 
     INPUT_FILE = open(input, 'r')
@@ -122,18 +132,15 @@ def compare_files(input_prod, input_sit):
         print("ABSENT_PROD_KEYS_ON_SIT -> " + str(ABSENT_PROD_KEYS_ON_SIT))
         print("ABSENT_SIT_KEYS_ON_PROD -> " + str(ABSENT_SIT_KEYS_ON_PROD))
         print("COMP_FILE_DIFF_UNIQUE -> " + str(COMP_FILE_DIFF_UNIQUE))
-    #TODO: delete below
+    #TODO: delete below upon finish
     else:
         print("equal")
     PROD_DICT.clear()
     SIT_DICT.clear()
 
 #TODO: compare files PROD_DATABUILD_DIR && SIT_DATABUILD_DIR
-#TODO: all files are available and the same
 #TODO: filter for DDS_CATEGORY == FUTURES
 #TODO: move all files from the subdirectories to the main direcotry of databuild
-#TODO: show filename and other necessary information
-#TODO: colorized output
 
 if __name__ == '__main__':
 #TODO: check quantity of elements and syntax of the inputs in cmd line
@@ -146,8 +153,16 @@ if __name__ == '__main__':
     COMMON_FILES = []
     UNCOMMON_FILES = []
 
-    # for file in PROD_DIR_FILES:
+    #TODO: check with Sergio
+    for file in PROD_SIT_FILES:
+        if file in PROD_DIR_FILES:
+            COMMON_FILES.append(file)
+        else:
+            UNCOMMON_FILES.append(file)
 
-    for file in PROD_DIR_FILES:
-        print("--------------" + file + "--------------")
+    for file in COMMON_FILES:
+        print(f"{bcolors.HEADER}file analyzed -> {file}{bcolors.ENDC}")
         compare_files(PROD_DIR + file, SIT_DIR + file)
+
+    print(f"\n{bcolors.OKGREEN}Analyzed files:\n{COMMON_FILES}{bcolors.ENDC}")
+    print(f"\n{bcolors.WARNING}UNCOMMON_FILES. NOT ANALIZED:\n{UNCOMMON_FILES}{bcolors.ENDC}")
